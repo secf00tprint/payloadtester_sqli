@@ -2,11 +2,11 @@
  * MySQL Database Initialization Script
  * 
  */
-create database `productdb`;
+CREATE DATABASE `productdb`;
 GRANT ALL PRIVILEGES ON `productdb`.* TO 'user'@'%';
 -- Create data 
-use productdb;
-create table `Products` (`ProductID` int NOT NULL AUTO_INCREMENT, `ProductName` VARCHAR(255), `Price` DECIMAL(5,2), PRIMARY KEY (`ProductID`));
-insert into `Products` (`ProductName`, `Price`) values ("Product A", 70.1);
-insert into `Products` (`ProductName`, `Price`) values ("Product B", 100.2);
-insert into `Products` (`ProductName`, `Price`) values ("Product C", 1.2);
+USE productdb;
+CREATE TABLE `Products` (`ProductID` int NOT NULL AUTO_INCREMENT, `ProductName` VARCHAR(255), `Price` DECIMAL(5,2), PRIMARY KEY (`ProductID`));
+INSERT INTO `Products` (`ProductName`, `Price`) VALUES ("Product A", 70.1);
+INSERT INTO `Products` (`ProductName`, `Price`) VALUES ("Product B", 100.2);
+INSERT INTO `Products` (`ProductName`, `Price`) VALUES ("Product C", 1.2);
