@@ -7,12 +7,13 @@ if ($mysqli->connect_errno) {
 }
 echo $mysqli->host_info . "<br><br>";
 // build sql statement with input
-$query = "SELECT * FROM Products WHERE Price < '".$_GET["value"]."'"."ORDER BY ProductName";
-
+$sql = "SELECT * FROM Products WHERE Price < '".$_GET["value"]."'"."ORDER BY ProductName";
 // execute the query against the database
-$result = $mysqli->query($query);
-if (!$result) {
-    echo ("Database Error [{$mysqli->errno}] {$mysqli->error}");
+if (!$result = $mysqli->query($sql)) {
+    echo ("Database Error <br><br>
+           Query: <pre>".$sql."</pre><br>
+           Errno: [{$mysqli->errno}] <br><br>
+           {$mysqli->error}");
 }
 // iterate through record set
 while($row = $result->fetch_assoc())
@@ -22,5 +23,7 @@ echo "Name : {$row['ProductName']} <br>".
      "Product ID : {$row['ProductID']} <br>".
      "Price : {$row['Price']} <br><br>";
 }
+
+$mysqli->close();
 
 ?>
