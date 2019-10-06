@@ -6,8 +6,10 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 echo $mysqli->host_info . "<br><br>";
+
 // build sql statement with input
 $sql = "SELECT * FROM Products WHERE Price < '".$_GET["value"]."'"."ORDER BY ProductName";
+
 // execute the query against the database
 if (!$result = $mysqli->query($sql)) {
     echo ("Database Error <br><br>
@@ -24,6 +26,7 @@ echo "Name : {$row['ProductName']} <br>".
      "Price : {$row['Price']} <br><br>";
 }
 
+// close database
 $mysqli->close();
 
 ?>
