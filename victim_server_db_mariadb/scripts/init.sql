@@ -20,6 +20,7 @@ INSERT INTO `Products` (`ProductName`, `Price`) VALUES ("Product C", 1.2);
 -- ****************** 
 CREATE DATABASE `cmsuserdb`;
 GRANT ALL PRIVILEGES ON `cmsuserdb`.* TO 'user'@'%';
+GRANT FILE           ON *.*           TO 'user'@'%';
 USE cmsuserdb;
 CREATE TABLE `CMSUsers` (`UserID` int NOT NULL AUTO_INCREMENT, `User` VARCHAR(255), `Password` VARCHAR(255), PRIMARY KEY (`UserID`));
 -- Create data

