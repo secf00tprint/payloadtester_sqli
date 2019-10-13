@@ -9,9 +9,6 @@ echo $mysqli->host_info . "<br><br>";
 
 // build sql statement with input
 $sql = "SELECT * FROM CMSUsers WHERE UserID = ".$_GET["UserID"];
-// $sql = "SELECT * FROM CMSUsers WHERE UserID = 1 UNION ALL SELECT LOAD_FILE('/etc/passwd'),2,3";
-
-// SELECT * FROM CMSUsers WHERE UserID = 1 UNION ALL SELECT LOAD_FILE('/etc/passwd'),2,3;
 
 // execute the query against the database
 if (!$result = $mysqli->query($sql)) {
