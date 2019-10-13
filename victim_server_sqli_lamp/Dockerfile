@@ -5,7 +5,7 @@ LABEL maintainer="secf00tprint@gmail.com"
 RUN apt-get update && apt-get install -y vim iputils-ping mariadb-server
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 
-#COPY html/ /var/www/html/
+COPY html/ /var/www/html/
 EXPOSE 80
 
 COPY scripts/* /

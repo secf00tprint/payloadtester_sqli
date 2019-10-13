@@ -17,6 +17,7 @@ INSERT INTO `Products` (`ProductName`, `Price`) VALUES ("Product C", 1.2);
 
 -- ******************
 -- Login SQLi example
+-- File Inclusion example
 -- ****************** 
 CREATE DATABASE `cmsuserdb`;
 GRANT ALL PRIVILEGES ON `cmsuserdb`.* TO 'user'@'%';

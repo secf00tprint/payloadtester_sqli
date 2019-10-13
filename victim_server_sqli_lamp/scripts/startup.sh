@@ -7,5 +7,5 @@ echo "[] Start mysql"
 service mysql start
 # Init Database
 mysql -u root < /startup.sql
-echo Start apache2
+echo "[] Start apache2"
 apache2-foreground
