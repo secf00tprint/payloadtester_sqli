@@ -74,7 +74,7 @@ Using LAMP Server:
 
 ### Standard
 
-http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1
+[http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1](http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1)
 
 ### Attack
 
@@ -92,8 +92,20 @@ http://127.0.0.1:8781/cmd.php?cmd=ls
 
 ## Standard
 
-http://127.0.0.1:8781/inf_disclosure/generic/show_timesheet.php
+[http://127.0.0.1:8781/inf_disclosure/generic/show_timesheet.php](http://127.0.0.1:8781/inf_disclosure/generic/show_timesheet.php)
 
 ## Attack
 
-http://127.0.0.1:8781/inf_disclosure/generic/show_employee_table.php?column1=AdminRights&column2=User&column3=Password&table=Users
+[http://127.0.0.1:8781/inf_disclosure/generic/show_employee_table.php?column1=AdminRights&column2=User&column3=Password&table=Users](http://127.0.0.1:8781/inf_disclosure/generic/show_employee_table.php?column1=AdminRights&column2=User&column3=Password&table=Users)
+
+# Form Skip Attack
+
+## Standard
+
+[http://127.0.0.1:8781/inf_disclosure/form_steps/forms.php](http://127.0.0.1:8781/inf_disclosure/form_steps/forms.php)
+
+Form to choose a customer showing soft skills
+
+## Verification
+
+[http://127.0.0.1:8781/inf_disclosure/form_steps/forms.php?form=form2&param='](http://127.0.0.1:8781/inf_disclosure/form_steps/forms.php?form=form2&param=')
