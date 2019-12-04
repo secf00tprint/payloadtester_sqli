@@ -11,8 +11,23 @@
     }
     echo $mysqli->host_info . "<br><br>";
 
+    $sql = "SELECT ";
+
+    $amount = 0;
+    if ($_GET['column1'] != 'tbd') {
+        $sql = $sql . $_GET['column1'];
+        $amount=$amount+1;}
+    if ($_GET['column2'] != 'tbd') {
+        if ($amount > 0) { $sql = $sql . ",";}
+        $sql = $sql . $_GET['column2'];
+    }
+    if ($_GET['column3'] != 'tbd') {
+        if ($amount > 0) { $sql = $sql . ",";}
+        $sql = $sql . $_GET['column3'];
+    }
+
     // build sql statement with input
-    $sql = "SELECT ".$_GET['column1'].",".$_GET['column2'].",".$_GET['column3']." FROM `".$_GET['table']."`";
+    $sql = $sql ." FROM `".$_GET['table']."`";
 
     // execute the query against the database
     if (!$result = $mysqli->query($sql)) {

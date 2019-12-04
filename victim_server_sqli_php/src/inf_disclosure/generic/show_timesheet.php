@@ -2,7 +2,7 @@
 <html>
 <body>
 
-<form method="get" action="show_employee_table.php" onsubmit="setDBParams()">
+<form method="get" action="show_employee_table.php" onsubmit="setDBParams(event)">
     <h2>Select Time Sheet</h2>
     <select id="selectEmployee">
     <?php
@@ -38,34 +38,37 @@
     ?>
     </select>
     <h2>Select information to show</h2>
-    <select id="columnsToUse" multiple>
+    <select id="columnsToUse" multiple required>
         <option value="Topic">Topic</option>
         <option value="JobDetails">Job Details</option>
         <option value="DayRate">Day Rate</option>
         <option value="WorkingHours">Working Hours</option>
     </select>
-    <input type="hidden" id="column1" name="column1" value="1"/>
-    <input type="hidden" id="column2" name="column2" value="2"/>
-    <input type="hidden" id="column3" name="column3" value="3"/>
+    <input type="hidden" id="column1" name="column1" value="Topic"/>
+    <input type="hidden" id="column2" name="column2" value="JobDetails"/>
+    <input type="hidden" id="column3" name="column3" value="DayRate"/>
     <input type="hidden" id="table" name="table" value="4"/>
 
     <br><br>
     <input type="submit" value="Show">
+    <br>
+    <br>
     <div id="errorMessages"></div>
 </form>
 
 <script>
-    function setDBParams() {
+    function setDBParams(event) {
         colId = 0;
         selectedValues = getSelectValues(document.getElementById('columnsToUse'));
+        document.getElementById('table').value = document.getElementById('selectEmployee').value;
         if (selectedValues.length == 3)
         {
             selectedValues.forEach(setupParam);
-            document.getElementById('table').value = document.getElementById('selectEmployee').value;
         }
         else
         {
-
+            document.getElementById("errorMessages").innerHTML = "You have to choose exactly 3 elements";
+            event.preventDefault();
         }
     }
 
