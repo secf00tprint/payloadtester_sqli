@@ -6,7 +6,7 @@ networks:
               - subnet: 172.19.0.0/16
 services:
     sql_victim_db_mariadb:
-        container_name: "victim.db.mariadb.tld"
+        container_name: "sql.victim.db.mariadb.tld"
         image: "mariadb:10.4.6"
         environment:
             TZ: "Europe/Berlin"
@@ -15,22 +15,29 @@ services:
             MYSQL_PASSWORD: 'password'
         volumes:
             - type: bind
-              source: ./victim_server_db_mariadb/scripts
+              source: ./sql_victim_db_mariadb/scripts
               target: /docker-entrypoint-initdb.d/
         networks:
             sqli_linux_network:
               ipv4_address: 172.19.0.2
     sql_nosql_victim_webapp_php:
-        container_name: "victim.sqli.php.tld"
-        build: "./victim_server_sqli_php"
+        container_name: "sql.nosql.victim.webapp.php.tld"
+        build: "./sql_nosql_victim_webapp_php"
         ports:
             - "127.0.0.1:8781:80"
         volumes:
             - type: bind
-              source: ./victim_server_sqli_php/src
+              source: ./sql_nosql_victim_webapp_php/src
               target: /var/www/html
         networks:
             sqli_linux_network:
               ipv4_address: 172.19.0.3
         links:
-            - "victim_server_db_mariadb"
+            - "sql_victim_db_mariadb"
+    nosql_victim_db_mongo:
+        container_name: "nosql.victim.db.mongo.tld"
+        image: "mongo:3.4.24"
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: password
