@@ -20,20 +20,34 @@ services:
         networks:
             sqli_linux_network:
               ipv4_address: 172.19.0.2
-    sql_nosql_victim_webapp_php:
-        container_name: "sql.nosql.victim.webapp.php.tld"
-        build: "./sql_nosql_victim_webapp_php"
+    sql_victim_webapp_php:
+        container_name: "sql.victim.webapp.php.tld"
+        build: "./sql_victim_webapp_php"
         ports:
             - "127.0.0.1:8781:80"
         volumes:
             - type: bind
-              source: ./sql_nosql_victim_webapp_php/src
+              source: ./sql_victim_webapp_php/src
               target: /var/www/html
         networks:
             sqli_linux_network:
               ipv4_address: 172.19.0.3
         links:
             - "sql_victim_db_mariadb"
+    nosql_victim_webapp_php:
+        container_name: "nosql.victim.webapp.php.tld"
+        build: "./nosql_victim_webapp_php"
+        ports:
+            - "127.0.0.1:8782:80"
+        volumes:
+            - type: bind
+              source: ./nosql_victim_webapp_php/src
+              target: /var/www/html
+        networks:
+            sqli_linux_network:
+                ipv4_address: 172.19.0.4
+        links:
+            - "nosql_victim_db_mongo"
     nosql_victim_db_mongo:
         container_name: "nosql.victim.db.mongo.tld"
         image: "mongo:3.4.24"
@@ -41,3 +55,12 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: password
+            MONGO_INITDB_DATABASE: nosqlidb
+        volumes:
+            - type: bind
+              source: ./nosql_victim_db_mongo/scripts
+              target: /docker-entrypoint-initdb.d/
+        networks:
+            sqli_linux_network:
+                ipv4_address: 172.19.0.5
+
