@@ -119,7 +119,7 @@ To get an overview of the examples goto http://127.0.0.1:8782/
 ## Get all products
 
 - [http://127.0.0.1:8782/products.php?product[$gt]=%22%22](http://127.0.0.1:8782/products.php?product[$gt]=%22%22)
-- [http://127.0.0.1:8782/products.php?product[$ne]=1(http://127.0.0.1:8782/products.php?product[$ne]=1)
+- [http://127.0.0.1:8782/products.php?product[$ne]=1](http://127.0.0.1:8782/products.php?product[$ne]=1)
 
 ## Get all credentials / Potential login bypass
 
