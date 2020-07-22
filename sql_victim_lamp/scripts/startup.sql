@@ -1,5 +1,5 @@
 FLUSH PRIVILEGES;
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'rootpwd';
+update mysql.user set password=password('rootpwd') where user='root';
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
 
 -- ****************************
@@ -12,3 +12,4 @@ USE cmsuserdb;
 CREATE TABLE `CMSUsers` (`UserID` int NOT NULL AUTO_INCREMENT, `User` VARCHAR(255), `Password` VARCHAR(255), PRIMARY KEY (`UserID`));
 -- Create data
 INSERT INTO `CMSUsers` (`User`,`Password`) VALUES ("admin","admin");
+INSERT INTO `CMSUsers` (`User`,`Password`) VALUES ("ch4rl35","eekeu6Sh");
