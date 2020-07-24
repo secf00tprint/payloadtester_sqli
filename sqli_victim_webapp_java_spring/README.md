@@ -1,6 +1,6 @@
 # SQLi vulnerable Spring Application
 
-# TL;DR
+## TL;DR
 
 To build and run:
 ```
@@ -19,7 +19,7 @@ To get access to the database:
 sudo docker exec -ti victim.sqli.webapp_java_spring.tld mysql --host localhost -uuser -ppassword sqli_example
 ```
 
-# SQLi
+## SQLi
 
 Check for union select:
 
