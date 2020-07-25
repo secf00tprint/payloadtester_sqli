@@ -24,7 +24,7 @@ Error when calling this url:
 
 ### List all products
 
-[http://127.0.0.1:8781/inf_disclosure/specific_table/list_products.php?value=100' OR '1'='1](http://127.0.0.1:8781/inf_disclosure/specific_table/list_products.php?value=100' OR '1'='1)
+[http://127.0.0.1:8781/inf_disclosure/specific_table/list_products.php?value=100' OR '1'='1](http://127.0.0.1:8781/inf_disclosure/specific_table/list_products.php?value=100'+OR+'1'='1)
 
 # Login Example
 
