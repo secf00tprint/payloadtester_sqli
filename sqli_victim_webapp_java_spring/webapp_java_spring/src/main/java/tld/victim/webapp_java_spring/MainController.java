@@ -43,7 +43,7 @@ public class MainController {
         return userRepository.findAll();
     }
 
-    @PostMapping(path="/vulnbyid")
+    @RequestMapping(path="/vulnbyid")
     public @ResponseBody String unsafeGetUserById(@RequestParam String id) throws SQLException {
         // UNSAFE !!! DON'T DO THIS !!!
         String sql = "select "
