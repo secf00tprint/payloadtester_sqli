@@ -46,7 +46,7 @@ Error when calling this url:
 
 ### Circumvent Login
 
-[http://127.0.0.1:8781/login/login.php?user=admin&password=xyz' OR '1'='1](http://127.0.0.1:8781/login/login.php?user=admin&password=xyz' OR '1'='1)
+[http://127.0.0.1:8781/login/login.php?user=admin&password=xyz' OR '1'='1](http://127.0.0.1:8781/login/login.php?user=admin&password=xyz'+OR+'1'='1)
 
 # File Attacks
 
