@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller 
 @RequestMapping(path="/sqlidemo") // This means URL's start with /sqlidemo (after Application path)
@@ -23,6 +26,9 @@ public class MainController {
     // This is for the sqli
     @Autowired
     DataSource dataSource;
+
+    @Autowired
+    EntityManager em;
 
     @PostMapping(path="/add") // Map ONLY POST Requests
     public @ResponseBody String addNewUser (@RequestParam String username, 
@@ -58,5 +64,20 @@ public class MainController {
             out = out+rs.getString("username");
         }
         return out;
+    }
+
+    @RequestMapping(path="/vulnbyid2")
+    public @ResponseBody String unsafeGetUserByIdJPA(@RequestParam String id) throws SQLException {
+        // UNSAFE !!! DON'T DO THIS !!!
+        String jpql = "select username from User where id = '"+ id + "'";
+        TypedQuery<String> q = em.createQuery(jpql, String.class);
+        return q.getResultList().get(0);
+    }
+
+    @RequestMapping(path="/safebyid2")
+    public @ResponseBody String safeGetUserByIdJPA(@RequestParam String id) throws SQLException {
+        String jpql = "select username from User where id = :id";
+        TypedQuery<String> q = em.createQuery(jpql, String.class).setParameter("id",Integer.parseInt(id));
+        return q.getResultList().get(0);
     }
 }
