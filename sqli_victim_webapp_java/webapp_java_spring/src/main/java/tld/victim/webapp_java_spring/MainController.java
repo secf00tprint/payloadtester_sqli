@@ -57,8 +57,9 @@ public class MainController {
                 + "from user where id = '"
                 + id
                 + "'";
+        BlacklistedQuery blacklistedQuery = new BlacklistedQuery(sql);
         Connection c = dataSource.getConnection();
-        ResultSet rs = c.createStatement().executeQuery(sql);
+        ResultSet rs = c.createStatement().executeQuery(blacklistedQuery.toString());
         String out = "";
         while (rs.next()) {
             out = out+rs.getString("username");

@@ -17,7 +17,7 @@ curl localhost:5808/sqlidemo/add -d username=user -d password=password
 Read username by id:
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1
+curl localhost:5808/sqlidemo/vulnbyid -d id=1
 ```
 
 To get access to the database:
