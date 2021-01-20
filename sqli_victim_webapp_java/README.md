@@ -10,8 +10,8 @@ sudo docker build -t sqli_victim_webapp_java_spring .; sudo docker run --name vi
 To fill the database:
 
 ```
-curl 'localhost:5808/sqlidemo/all'
-curl localhost:5808/sqlidemo/add -d username=user -d password=password
+curl -X GET 'localhost:5808/sqlidemo/all'
+curl -X POST localhost:5808/sqlidemo/add -d username=user -d password=password
 ```
 
 Read username by id:

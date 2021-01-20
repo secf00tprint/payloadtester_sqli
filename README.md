@@ -1,6 +1,6 @@
 # Start
 
-Start the network with `./start_linux_network.sh`. You have to wait a bit until the databases are populated.
+Start the network with `sudo ./start_linux_network.sh` (you need sudo for the docker exec's if you run it properly not using docker user). You have to wait a bit until the databases are populated.
 
 # SQL
 

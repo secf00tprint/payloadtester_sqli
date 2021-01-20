@@ -2,11 +2,7 @@ package tld.victim.webapp_java_spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -14,6 +10,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller 
@@ -42,6 +39,16 @@ public class MainController {
             userRepository.save(n);
             return "Saved";
         }
+
+    @DeleteMapping(path="/del")
+    public @ResponseBody String delUser(@RequestParam String username) {
+        List<User> foundUsernames = userRepository.findByUsername(username);
+        userRepository.deleteAll(foundUsernames);
+        if (foundUsernames.isEmpty() == true)
+            return "Nothing to delete";
+        else
+            return "Deleted";
+    }
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<User> getAllUsers() {
