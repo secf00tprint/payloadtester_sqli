@@ -2,6 +2,7 @@ package tld.victim.webapp_java_spring.blacklist;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class to perform blacklisting.
@@ -133,23 +134,27 @@ public class Blacklist {
         blacklistLog.addStrong(blacklistConfDataHelper.CONFSTRING_ALL_LOWERCASE);
 
         AtomicInteger pos = new AtomicInteger(0);
+        AtomicReference<Character> foundchar = new AtomicReference<>((char) 0);
         boolean result = Arrays.stream(originalquery).allMatch(querypart ->
         {
             for (char c : querypart.toCharArray()) {
-                if (Character.isLetter(c) && (Character.isLowerCase(c) == false) && (pos.get() != table_pos)) return false;
+                if (Character.isLetter(c) && (Character.isLowerCase(c) == false) && (pos.get() != table_pos)) {
+                    foundchar.set(c);
+                    return false;
+                }
             }
             pos.getAndIncrement();
             return true;
         });
         if (result == false) {
-            blacklistLog.add("Non lowercase character found");
+            blacklistLog.add("Uppercase character found: " + foundchar);
             blacklistLog.add("Refusing execution of sql statement" + "\n");
         }
-        else
+        else {
             blacklistLog.add(LOG_CHECK_OK);
-            blacklistLog.add("Using: ");
+            blacklistLog.add("UsingB: ");
             blacklistLog.add(String.join("", originalquery) + "\n");
-        ;
+        }
         return result;
     }
 
@@ -158,12 +163,12 @@ public class Blacklist {
         blacklistLog.addStrong(blacklistConfDataHelper.CONFSTRING_ALL_UPPERCASE);
 
         AtomicInteger pos = new AtomicInteger(0);
+        AtomicReference<Character> foundchar = new AtomicReference<>((char) 0);
         boolean result = Arrays.stream(originalquery).allMatch(querypart ->
         {
             for (char c : querypart.toCharArray()) {
                 if (Character.isLetter(c) && (Character.isUpperCase(c) == false) && (pos.get() != table_pos)) {
-                    blacklistLog.add("\n" + String.join("", originalquery) + "  " + c+ "\n");
-                    blacklistLog.add("\n " + pos.get() + " " + table_pos);
+                    foundchar.set(c);
                     return false;
                 }
             }
@@ -171,15 +176,19 @@ public class Blacklist {
             return true;
         });
         if (result == false) {
-            blacklistLog.add("Non uppercase character found");
+            blacklistLog.add("Lowercase character found: " + foundchar);
             blacklistLog.add("Refusing execution of sql statement" + "\n");
         }
-        else
+        else {
             blacklistLog.add(LOG_CHECK_OK);
             blacklistLog.add("Using: ");
             blacklistLog.add(String.join("", originalquery) + "\n");
-        ;
+        }
         return result;
+    }
+
+    public boolean noBadKeywords(String[] originalquery) {
+        return true;
     }
 
     public boolean isQueryBlocked() {
