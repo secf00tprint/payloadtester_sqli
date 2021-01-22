@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller 
@@ -57,21 +56,35 @@ public class MainController {
     }
 
     @RequestMapping(path="/vulnbyid")
-    public @ResponseBody String unsafeGetUserById(@RequestParam String id) throws SQLException {
-        // UNSAFE !!! DON'T DO THIS !!!
-        String sql = "select "
+    public @ResponseBody String unsafeGetUserById(@RequestParam String id, @RequestParam(required=false) String[] blacklistconfig) {
+        String[] originalquery = {
+                "select "
                 + "* "
-                + "from user where id = '"
-                + id
-                + "'";
-        BlacklistedQuery blacklistedQuery = new BlacklistedQuery(sql);
-        Connection c = dataSource.getConnection();
-        ResultSet rs = c.createStatement().executeQuery(blacklistedQuery.toString());
-        String out = "";
-        while (rs.next()) {
-            out = out+rs.getString("username");
+                + "from user where id = '",
+                id,
+                "'"};
+        // Blacklisting.replaceOddSingleQuote
+        // Blacklisting.getLog()
+        String response_out = "";
+        Blacklist blacklist = new Blacklist(blacklistconfig, originalquery);
+        response_out = blacklist.getLog();
+        if (blacklist.isQueryBlocked() == false)
+        {
+            ResultSet rs = null;
+            try {
+                Connection c = dataSource.getConnection();
+                rs = c.createStatement().executeQuery(blacklist.getBlacklistedQuery());
+
+                while (rs.next()) {
+                    response_out = response_out + rs.getString("username");
+                }
+            }
+            catch (SQLException ex)
+            {
+                response_out = response_out + "\n" + ex.getMessage() + "\n";
+            }
         }
-        return out;
+        return response_out;
     }
 
     @RequestMapping(path="/vulnbyid2")
