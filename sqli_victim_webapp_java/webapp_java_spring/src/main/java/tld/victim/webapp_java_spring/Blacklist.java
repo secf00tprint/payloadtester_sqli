@@ -4,9 +4,11 @@ import java.util.Arrays;
 
 public class Blacklist {
 
+    private String CONFSTRING_HELP              = "help";
     private String CONFSTRING_ALL_UPPERCASE     = "alluppercase";
     private String CONFSTRING_ALL_LOWERCASE     = "alllowercase";
     private String CONFSTRING_ODD_SINGLE_QUOTES = "oddsinglequotes";
+    private String CONFSTRING_KEYWORD_DETECTION = "keyworddetection";
 
     private String LOG_NOTHING_TO_REPLACE = "\n[Blacklist] Nothing to replace\n";
     private String LOG_CHECK_OK           = "\n[Blacklist] Check ok\n";
@@ -27,7 +29,17 @@ public class Blacklist {
         blacklistedQuery = originalQuery;
         if (blacklistConfig != null)
         {
-            if (noMutualExclusionsInConfig())
+            if (Arrays.stream(blacklistConfig).anyMatch(CONFSTRING_HELP::equals))
+            {
+                log = "\nBlacklist demo for sql injection:" +
+                      "\n" +
+                      "\n Possible blacklist configs:" +
+                      "\n " + CONFSTRING_ALL_UPPERCASE +
+                      "\n " + CONFSTRING_ALL_LOWERCASE +
+                      "\n " + CONFSTRING_ODD_SINGLE_QUOTES +
+                      "\n " + CONFSTRING_KEYWORD_DETECTION;
+            }
+            else if (noMutualExclusionsInConfig())
             {
                 if (Arrays.stream(blacklistConfig).anyMatch(CONFSTRING_ODD_SINGLE_QUOTES::equals))
                     blacklistedQuery = replaceOddSingleQuote(blacklistedQuery);
