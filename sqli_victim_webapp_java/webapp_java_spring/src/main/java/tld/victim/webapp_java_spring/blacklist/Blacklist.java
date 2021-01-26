@@ -10,11 +10,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Blacklist {
 
     private BlacklistConfDataHelper blacklistConfDataHelper = BlacklistConfDataHelper.get();
-    /**
-     * Different reoccuring logs.
-     */
-    private final String LOG_NOTHING_TO_REPLACE = "Nothing to replace\n";
-    private final String LOG_CHECK_OK           = "Check ok\n";
 
     /**
      * Delivered blacklist configuration to apply.
@@ -69,9 +64,11 @@ public class Blacklist {
                 if (confContains(blacklistConfDataHelper.CONFSTRING_ODD_SINGLE_QUOTES))
                     blacklistedQuery = replaceOddSingleQuote(blacklistedQuery);
                 if (confContains(blacklistConfDataHelper.CONFSTRING_ALL_LOWERCASE))
-                    queryIsBlocked = (isLowerCase(blacklistedQuery) == false);
+                    queryIsBlocked = (isAllLowerCase(blacklistedQuery) == false);
                 if (confContains(blacklistConfDataHelper.CONFSTRING_ALL_UPPERCASE))
-                    queryIsBlocked = (isUpperCase(blacklistedQuery) == false);
+                    queryIsBlocked = (isAllUppercase(blacklistedQuery) == false);
+                if (confContains(blacklistConfDataHelper.CONFSTRING_KEYWORD_DETECTION))
+                    queryIsBlocked = (hasBadKeywordCombo(blacklistedQuery) == true);
 
                 blacklistLog.addNewline();
             }
@@ -118,9 +115,8 @@ public class Blacklist {
             blacklistLog.add(String.join("", newquery) + "\n");
         }
         else
-            blacklistLog.add(LOG_NOTHING_TO_REPLACE);
-            blacklistLog.add("Using: ");
-            blacklistLog.add(String.join("", originalquery) + "\n");
+            blacklistLog.addNothingToReplace(originalquery);
+
         return newquery;
     }
 
@@ -129,7 +125,7 @@ public class Blacklist {
      * @param originalquery original query to apply blacklist on.
      * @return true, if all characters are lower case.
      */
-    public boolean isLowerCase(String[] originalquery) {
+    public boolean isAllLowerCase(String[] originalquery) {
 
         blacklistLog.addStrong(blacklistConfDataHelper.CONFSTRING_ALL_LOWERCASE);
 
@@ -148,17 +144,19 @@ public class Blacklist {
         });
         if (result == false) {
             blacklistLog.add("Uppercase character found: " + foundchar);
-            blacklistLog.add("Refusing execution of sql statement" + "\n");
+            blacklistLog.addRefuseExecution();
         }
-        else {
-            blacklistLog.add(LOG_CHECK_OK);
-            blacklistLog.add("UsingB: ");
-            blacklistLog.add(String.join("", originalquery) + "\n");
-        }
+        else blacklistLog.addCheckOk(originalquery);
+
         return result;
     }
 
-    public boolean isUpperCase(String[] originalquery) {
+    /**
+     * Check that all characters in the query are upper case.
+     * @param originalquery original query to apply blacklist on.
+     * @return true, if all characters are lower case.
+     */
+    public boolean isAllUppercase(String[] originalquery) {
 
         blacklistLog.addStrong(blacklistConfDataHelper.CONFSTRING_ALL_UPPERCASE);
 
@@ -177,18 +175,26 @@ public class Blacklist {
         });
         if (result == false) {
             blacklistLog.add("Lowercase character found: " + foundchar);
-            blacklistLog.add("Refusing execution of sql statement" + "\n");
+            blacklistLog.addRefuseExecution();
         }
-        else {
-            blacklistLog.add(LOG_CHECK_OK);
-            blacklistLog.add("Using: ");
-            blacklistLog.add(String.join("", originalquery) + "\n");
-        }
+        else blacklistLog.addCheckOk(originalquery);
         return result;
     }
 
-    public boolean noBadKeywords(String[] originalquery) {
-        return true;
+    public boolean hasBadKeywordCombo(String[] originalquery) {
+        blacklistLog.addStrong(blacklistConfDataHelper.CONFSTRING_KEYWORD_DETECTION);
+
+        for (String badkeywordCombo : blacklistConfDataHelper.BADKEYWORD_COMBOS)
+        {
+            if (originalquery[predicate_pos].toUpperCase().contains(badkeywordCombo))
+            {
+                blacklistLog.add("Keyword combination found: "+ badkeywordCombo);
+                blacklistLog.addRefuseExecution();
+                return true;
+            }
+        }
+        blacklistLog.addCheckOk(originalquery);
+        return false;
     }
 
     public boolean isQueryBlocked() {
