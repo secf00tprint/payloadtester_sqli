@@ -25,7 +25,7 @@ public class MainController {
 
     BlacklistConfDataHelper blacklistConfDataHelper = BlacklistConfDataHelper.get();
 
-    // This is for the sqli
+    // Autowired datasource for the sqli.
     @Autowired
     DataSource dataSource;
 
@@ -93,7 +93,11 @@ public class MainController {
             }
             catch (SQLException ex)
             {
-                response_out = response_out + "\n" + ex.getMessage() + "\n";
+                response_out = response_out + "\n" +
+                               blacklist.getBlacklistedQuery() + "\n" + "\n" +
+                               ex.getMessage() + "\n" +
+                               "Error Code: \t"  + ex.getErrorCode() + "\n" +
+                               "SQL State: \t" + ex.getSQLState() + "\n";
             }
         }
         return response_out;
