@@ -13,6 +13,8 @@ public class BlacklistConfDataHelper {
     public final String CONFSTRING_ODD_SINGLE_QUOTES = "oddsinglequotes";
     public final String CONFSTRING_KEYWORD_DETECTION = "keyworddetection";
 
+    protected final String[] BADKEYWORD_COMBOS = {"UNION SELECT"};
+
     private static BlacklistConfDataHelper instance;
 
     private BlacklistConfDataHelper() {}

