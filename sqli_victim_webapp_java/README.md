@@ -178,9 +178,15 @@ curl localhost:5808/sqlidemo/vulnbyid2 -d id="1' AND SUBSTRING(password,1,1)='a"
 
 ## Safe Implementation
 
+### Java based
+
+```
+curl localhost:5808/sqlidemo/safebyid -d id="1' AND SUBSTRING(password,1,1)='p"
+```
+
 ### JPQL based
 
 ```
 curl localhost:5808/sqlidemo/add -d username=user -d password=password
-curl localhost:5808/sqlidemo/vulnbyid2 -d id="1' AND SUBSTRING(password,1,1)='p"
+curl localhost:5808/sqlidemo/safebyid2 -d id="1' AND SUBSTRING(password,1,1)='p"
 ```
