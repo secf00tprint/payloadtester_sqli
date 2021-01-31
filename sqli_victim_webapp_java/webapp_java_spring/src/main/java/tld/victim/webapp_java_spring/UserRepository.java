@@ -1,7 +1,6 @@
 package tld.victim.webapp_java_spring;
 
 import org.springframework.data.repository.CrudRepository;
-import tld.victim.webapp_java_spring.User;
 
 import java.util.List;
 
@@ -9,5 +8,5 @@ import java.util.List;
 
 public interface UserRepository extends CrudRepository<User,Integer> {
 
-    List<User> findByUsername(String username);
+    List<User> findByUsername(String username);;
 }

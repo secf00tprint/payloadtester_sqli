@@ -12,9 +12,8 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Controller 
 @RequestMapping(path="/sqlidemo") // This means URL's start with /sqlidemo (after Application path)
@@ -61,6 +60,25 @@ public class MainController {
         return userRepository.findAll();
     }
 
+    @RequestMapping(path="/safebyid")
+    public @ResponseBody String safeGetUserById(@RequestParam Integer id)
+    {
+        Optional<User> optional = userRepository.findById(id);
+        return optional.get().getUsername();
+
+    }
+
+    @RequestMapping(path="/safebyusername")
+    public @ResponseBody String safeGetUserByUsername(@RequestParam String username)
+    {
+        List<User> users = userRepository.findByUsername(username);
+        String return_string = "";
+        for (User user : users)
+        {return_string = return_string + user.getId();};
+        return return_string;
+
+    }
+
     @RequestMapping(path="/vulnbyid")
     public @ResponseBody String unsafeGetUserById(@RequestParam String id, @RequestParam(required=false) String[] blacklistconfig) {
         String[] originalquery = {
@@ -68,10 +86,10 @@ public class MainController {
                 "user",
                 " where id = '",
                 id,
-                "'"};
+                "' group by username order by username asc"};
 
         // for test purposes if uppercase black list is used set query to an upper case one
-        if (blacklistConfDataHelper.confContains(blacklistconfig, blacklistConfDataHelper.CONFSTRING_ALL_UPPERCASE))
+        if (blacklistConfDataHelper.confContains(blacklistconfig, blacklistConfDataHelper.CONFSTRING_BLOCK_ANY_LOWERCASE))
         {
             originalquery = new String[] {originalquery[0].toUpperCase(), "user", originalquery[2].toUpperCase(), id, "'"};
         }
@@ -90,6 +108,8 @@ public class MainController {
                 while (rs.next()) {
                     response_out = response_out + rs.getString("username");
                 }
+                rs.close();
+                c.close();
             }
             catch (SQLException ex)
             {
@@ -105,7 +125,6 @@ public class MainController {
 
     @RequestMapping(path="/vulnbyid2")
     public @ResponseBody String unsafeGetUserByIdJPA(@RequestParam String id) throws SQLException {
-        // UNSAFE !!! DON'T DO THIS !!!
         String jpql = "select username from User where id = '"+ id + "'";
         TypedQuery<String> q = em.createQuery(jpql, String.class);
         return q.getResultList().get(0);

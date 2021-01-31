@@ -10,8 +10,8 @@ GRANT FILE           ON *.*           TO 'user'@'localhost';
 USE `sqli_example`;
 CREATE TABLE `user` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `username` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
+    `username` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
                     );
 INSERT INTO `user` (`username`,`password`) VALUES ('admin','4dm1n');

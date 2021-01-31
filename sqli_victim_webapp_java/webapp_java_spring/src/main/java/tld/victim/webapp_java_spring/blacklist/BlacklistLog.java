@@ -54,15 +54,21 @@ class BlacklistLog {
                 "\n" +
                 "\nPossible blacklist configs:" +
                 "\n" +
-                "\n|" + blacklistConfDataHelper.CONFSTRING_HELP                + "\t\t\t|" + "Shows this help information" + "\t\t\t\t|" +
-                "\n|" + blacklistConfDataHelper.CONFSTRING_ALL_UPPERCASE + "*" + "\t\t|"   + "Checks if query (except table) is upper case" + "\t\t|" +
-                "\n|" + blacklistConfDataHelper.CONFSTRING_ALL_LOWERCASE + "*" + "\t\t|"   + "Checks if query (except table) is lower case" + "\t\t|" +
-                "\n|" + blacklistConfDataHelper.CONFSTRING_ODD_SINGLE_QUOTES   + "\t|"     + "Checks predicate part of query for odd single quotes" + "\t|" +
-                "\n|" +                                                          "\t\t\t|" + "if present sustitutes ' with ' ' " + "\t\t\t|" +
-                "\n|" + blacklistConfDataHelper.CONFSTRING_KEYWORD_DETECTION   + "\t|"     + "" + "\t\t\t\t\t\t\t| " +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_HELP                    + "\t\t\t\t| "      + "Shows this help information" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_BLOCK_ANY_LOWERCASE + " *1"  + "\t\t| "     + "Blocks execution if query (except table) has upper case characters" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_BLOCK_ANY_UPPERCASE + " *1"  + "\t\t| "     + "Blocks execution if query (except table) has lower case characters" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_BLOCK_KEYWORD_DETECTION + " *2"   +"\t| "   + "Blocks execution if keyword sequences are used in input part (currently UNION SELECT)" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_BLOCK_COMMENT_DOUBLE_DASH +   "\t| "        + "Blocks execution if double dashes are used" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_BLOCK_BAD_STRINGS_DETECTION +   "\t\t| "    + "Blocks execution if specific strings are inside input part (currently VERSION)" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_BLOCK_CONCATENATION         +   "\t\t| "    + "Blocks execution if input part contains concatenation CONCAT function" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_BLOCK_BASE64         +   "\t\t\t| "         + "Blocks execution if input part contains base64 decrypt FROM_BASE64 function" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_BLOCK_CHAR_FUNCTION +   "\t\t| "            + "Blocks execution if input part contains character value CHAR function" +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_STRIP_KEYWORD_DETECTION + " *2" +"\t| "     + "Checks if keyword sequences are used in input part (currently UNION SELECT)" +
+                "\n| " +                                                          "\t\t\t\t  "          + "if present removes it from input " +
+                "\n| " + blacklistConfDataHelper.CONFSTRING_ADD_ODD_SINGLE_QUOTES   + "\t\t| "          + "Checks input part of query for odd single quotes" +
+                "\n| " +                                                          "\t\t\t\t  "          + "if present sustitutes ' with ' ' " +
                 "\n" +
-                "\n* Are mutual exclusive" +
-                "\n" +
+                "\n * Are mutual exclusive" +
                 "\n";
     }
 
@@ -72,17 +78,23 @@ class BlacklistLog {
 
     public void addNothingToReplace(String[] query) {
         add(LOG_NOTHING_TO_REPLACE);
-        add("Using: ");
-        add(String.join("", query) + "\n");
     }
 
     public void addCheckOk(String[] query) {
         add(LOG_CHECK_OK);
-        add("Using: ");
-        add(String.join("", query) + "\n");
     }
 
     public void addRefuseExecution() {
         add(LOG_REFUSE_EXECUTION);
+    }
+
+    public void addInitialQuery(String[] query) {
+        add("Initial query: ");
+        add(String.join("", query) + "\n");
+    }
+
+    public void addUsedQuery(String[] query) {
+        add("Using: ");
+        add(String.join("", query) + "\n");
     }
 }
