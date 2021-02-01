@@ -1,7 +1,7 @@
 # SQLi vulnerable Spring Application
 
 <p align="center">
-  <img width="600" src="intro.svg">
+  <img src="intro.svg">
 </p>
 
 ## TL;DR
