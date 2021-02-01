@@ -1,4 +1,4 @@
-# SQLi vulnerable Spring Application
+# Blacklist Demo for an SQLi vulnerable Spring Application
 
 <p align="center">
   <img src="intro.svg">
