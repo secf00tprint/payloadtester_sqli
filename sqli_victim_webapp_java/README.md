@@ -1,8 +1,6 @@
 # Blacklist Demo for an SQLi vulnerable Spring Application
 
-<p align="center">
-  <img src="intro.svg">
-</p>
+A short video introduction can be found here ![](Video.md)
 
 ## TL;DR
 
