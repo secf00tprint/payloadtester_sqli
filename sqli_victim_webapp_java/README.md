@@ -1,6 +1,6 @@
 # Blacklist Demo for an SQLi vulnerable Spring Application
 
-A short video introduction can be found here ![](Video.md)
+A short video introduction can be found <a href="VIDEO.md">here</a>.
 
 ## TL;DR
 
