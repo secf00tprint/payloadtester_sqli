@@ -1,6 +1,6 @@
 # Blacklist Demo for an SQLi vulnerable Spring Application
 
-<a href="https://asciinema.org/a/ICD8HCOzUafwiftLb6pL44N7w"><img src="https://asciinema.org/a/ICD8HCOzUafwiftLb6pL44N7w.png" width="836"/></a>
+<script src="https://asciinema.org/a/ICD8HCOzUafwiftLb6pL44N7w.js" id="asciicast-14" async></script>
 
 ## TL;DR
 
