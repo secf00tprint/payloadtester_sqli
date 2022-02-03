@@ -2,7 +2,7 @@
 
 Start the network with `sudo ./start_linux_network.sh` (you need sudo for the docker exec's if you run it properly not using docker user). You have to wait a bit until the databases are populated.
 
-Belo is an FAQ if you have problems starting the project.
+Below is an FAQ if you have problems starting the project.
 
 # SQL
 
