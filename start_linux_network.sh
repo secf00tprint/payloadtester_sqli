@@ -4,13 +4,12 @@ DOCKER_COMPOSE_FILE=docker-compose.yml
 
 if ! [[ "$(groups)" =~ (^|[[:space:]])docker($|[[:space:]]) ]]
 then
-    echo "You not to be root to run this application"
+    echo "You must be in docker group (either root or user) to run this application"
     exit
 fi
 
 # Check if docker, docker-machine and docker-compse is installed
 command -v docker >/dev/null 2>&1 || { echo >&2 "docker needed (see https://www.docker.com)"; exit 1; }
-command -v docker-machine >/dev/null 2>&1 || { echo >&2 "docker-machine needed (see https://docs.docker.com/machine/install-machine/)"; exit 1; }
 command -v docker-compose >/dev/null 2>&1 || { echo >&2 "docker-compose needed (see https://docs.docker.com/compose/install/)"; exit 1; }
 
 
