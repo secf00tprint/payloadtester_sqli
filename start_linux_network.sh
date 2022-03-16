@@ -2,10 +2,14 @@
 
 DOCKER_COMPOSE_FILE=docker-compose.yml
 
-if ! [[ "$(groups)" =~ (^|[[:space:]])docker($|[[:space:]]) ]]
+if [[ "$OSTYPE" == "linux-gnu"* ]]
 then
-    echo "You not to be root to run this application"
-    exit
+    if ! [[ "$(groups)" =~ (^|[[:space:]])docker($|[[:space:]]) ]]
+    then
+        echo "You need to be root to run this application"
+        echo "Add docker group to user (for sudo to root)"
+        exit
+    fi
 fi
 
 # Check if docker, docker-machine and docker-compse is installed
