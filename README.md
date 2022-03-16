@@ -2,6 +2,8 @@
 
 Start the network with `sudo ./start_linux_network.sh` (you need sudo for the docker exec's if you run it properly not using docker user). You have to wait a bit until the databases are populated.
 
+Below is an FAQ if you have problems starting the project.
+
 # SQL
 
 ## Overview
@@ -122,3 +124,15 @@ To get an overview of the examples goto http://127.0.0.1:8783/
 ## Get all credentials / Potential login bypass
 
 - [http://127.0.0.1:8783/users.php?user[$ne]=1&pass[$ne]=1](http://127.0.0.1:8782/users.php?user[$ne]=1&pass[$ne]=1)
+
+# FAQ
+
+## Address range problems 
+
+```
+ERROR: Pool overlaps with other one on this address space
+Removing network payloadtester_sqli_sqli_linux_network
+WARNING: Network payloadtester_sqli_sqli_linux_network not found.
+```
+
+Check your networks with `sudo docker network ls`. There are address ranges colliding. You can remove an address range with `sudo docker network rm <network id>`.
