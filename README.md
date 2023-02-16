@@ -1,3 +1,7 @@
+# Introduction
+
+This repo contains some docker containers which are vulnerable to SQLi. You can use it to recreate these attacks.
+
 # Start
 
 Start the network with `sudo ./start_linux_network.sh` (you need sudo for the docker exec's if you run it properly not using docker user). You have to wait a bit until the databases are populated.
